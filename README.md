@@ -11,8 +11,9 @@ Request Camera and Screenshot Data: The application sends GET requests to localh
 Retrieve Report: Clicking the "Get Report" button sends a GET request to localhost:3000/report and displays the response in a dedicated box.
 # Code Overview:
 
-HTML Structure: The application is built using HTML, CSS, and JavaScript.
-Timer Functionality: JavaScript handles the timer functionality, updating the timer display every second and triggering additional actions every 10 minutes.
-Request Handling: Fetch API is used to send HTTP requests to the specified endpoints, handling both successful responses and errors.
-Conclusion:
+* HTML Structure: The application is built using HTML, CSS, and JavaScript.
+* Timer Functionality: JavaScript handles the timer functionality, updating the timer display every second and triggering additional actions every 10 minutes.
+* Request Handling: Fetch API is used to send HTTP requests to the specified endpoints, handling both successful responses and errors.
+*
+```Conclusion:
 In conclusion, our Timer Application provides a simple yet effective tool for managing time and accessing data from external sources. Thank you for your attention, and we welcome any feedback or questions.
