@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    .container {
+      text-align: center;
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+    }
+
+    #timer {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    #reportBox {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 20px;
+      width: 300px;
+      height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button id="startBtn">Başlat</button>
+    <button id="stopBtn">Durdur</button>
+    <button id="reportBtn">Rapor Al</button>
+    <div id="timer">0 saniye</div>
+    <div id="reportBox"></div>
+  </div>
+  
+  <script>
+    let timer;
+    let startTime;
+    let running = false;
+    let counter = 0; 
+    const timerElement = document.getElementById('timer');
+    const reportBox = document.getElementById('reportBox');
+
+    function startTimer() {
+      if (!running) {
+        running = true;
+        startTime = new Date().getTime();
+        timer = setInterval(function() {
+          counter = Math.floor((new Date().getTime() - startTime) / 1000);
+          updateTimer(counter); 
+
+          if (counter == 10) {
+            sendRequests();
+          }
+        }, 1000);
+      }
+      sendRequestsStart();
+    }
+
+    function stopTimer() {
+      if (running) {
+        running = false;
+        clearInterval(timer);
+        sendRequestsStop();
+      }
+    }
+
+    function updateTimer(seconds) {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const remainingSeconds = seconds % 60;
+      timerElement.textContent = hours + ' saat ' + minutes + ' dakika ' + remainingSeconds + ' saniye';
+    }
+
+    function sendRequests() {
+      // Kamera ve Ekran görüntüsü istekleri gönderme
+      fetch('http://localhost:3000/camera')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Kamera isteği başarısız');
+          }
+          console.log('Kamera isteği gönderildi');
+          return response.json();
+        })
+        .then(data => console.log('Kamera yanıtı:', data))
+        .catch(error => {
+          console.error('Kamera isteği gönderme hatası:', error);
+        });
+
+      fetch('http://localhost:3000/screenshot')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Ekran görüntüsü isteği başarısız');
+          }
+          console.log('Ekran görüntüsü isteği gönderildi');
+          return response.json();
+        })
+        .then(data => console.log('Ekran görüntüsü yanıtı:', data))
+        .catch(error => {
+          console.error('Ekran görüntüsü isteği gönderme hatası:', error);
+        });
+    }
+    function sendRequestsStart() {
+      // Durdurma isteği gönderme
+      fetch('http://localhost:3000/start', {
+        method: 'POST'
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Başlatma isteği başarısız');
+          }
+          console.log('Başlatma isteği gönderildi');
+        })
+        .catch(error => {
+          console.error('Başlatma isteği gönderme hatası:', error);
+        });
+    }
+    function sendRequestsStop() {
+      // Durdurma isteği gönderme
+      fetch('http://localhost:3000/stop', {
+        method: 'POST'
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Durdurma isteği başarısız');
+          }
+          console.log('Durdurma isteği gönderildi');
+        })
+        .catch(error => {
+          console.error('Durdurma isteği gönderme hatası:', error);
+        });
+    }
+
+    function sendReportRequest() {
+      // Rapor isteği gönderme
+      fetch('http://localhost:3000/report')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Rapor isteği başarısız');
+          }
+          console.log('Rapor isteği gönderildi');
+          return response.json();
+        })
+        .then(data => {
+          console.log('Rapor yanıtı:', data);
+          reportBox.textContent = JSON.stringify(data);
+        })
+        .catch(error => {
+          console.error('Rapor isteği gönderme hatası:', error);
+        });
+    }
+
+    // Start butonuna tıklandığında
+    document.getElementById('startBtn').addEventListener('click', function() {
+      startTimer(); // Timer'ı başlat
+    });
+
+    // Stop butonuna tıklandığında
+    document.getElementById('stopBtn').addEventListener('click', function() {
+      stopTimer(); // Timer'ı durdur
+    });
+
+    // Rapor al butonuna tıklandığında
+    document.getElementById('reportBtn').addEventListener('click', function() {
+      sendReportRequest(); // Rapor isteği gönder
+    });
+  </script>
+</body>
+</html>

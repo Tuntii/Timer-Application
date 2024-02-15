@@ -1,0 +1,23 @@
+{
+  "name": "job-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-react": "^6.24.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "moment-timezone": "^0.5.45",
+    "node-webcam": "^0.8.2",
+    "screenshot-desktop": "^1.15.0",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0"
+  }
+}
