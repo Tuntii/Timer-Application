@@ -1,6 +1,6 @@
 {
-  "name": "electron",
-  "productName": "electron",
+  "name": "timerapp",
+  "productName": "timerappbyelectron",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -9,10 +9,11 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint src --color"
+    "lint": "eslint src --color",
+    "install-all": "cd backend && npm install && cd .. && npm install"
   },
   "keywords": [],
-  "author": "tunay",
+  "author": "Tunay Engin",
   "license": "MIT",
   "config": {
     "forge": {
